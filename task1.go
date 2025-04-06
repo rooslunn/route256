@@ -10,7 +10,7 @@ import (
 	"os"
 )
 
-func main() {
+func main_task1() {
 
 	var in *bufio.Reader
 	var out *bufio.Writer
