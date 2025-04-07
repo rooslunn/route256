@@ -5,27 +5,13 @@
 package main
 
 import (
-	"io/fs"
-	"os"
 	"path/filepath"
-	"strings"
 	"testing"
 	"time"
 	"unsafe"
 	"math/rand"
 )
 
-func read_file(from_file string) ([]string, error) {
-	data, err := os.ReadFile(from_file)
-	if err != nil {
-		return nil, err
-	}
-	return strings.Split(string(data), "\n"), nil
-}
-
-func fileNameWithoutExt(fileName string) string {
-	return strings.TrimSuffix(fileName, filepath.Ext(fileName))
-}
 
 func Test_testCondition(t *testing.T) {
 
@@ -36,10 +22,9 @@ func Test_testCondition(t *testing.T) {
 	}
 
 	var err error
-	const TestDataDir = "task1-test-input"
+	const TestDataDir = "task1-input"
 
-	root := os.DirFS(TestDataDir)
-	answer_files, err := fs.Glob(root, "*.a")
+	answer_files, err := file_list(TestDataDir, ".a")
 	if err != nil {
 		t.Fatal("can't list dir with test files")
 	}
@@ -54,6 +39,7 @@ func Test_testCondition(t *testing.T) {
 			continue
 		}
 		test_inputs = test_inputs[1:]
+		test_inputs = delete_last_if_empty(test_inputs)
 
 		answers, err := read_file(full_fn)
 		if err != nil {
@@ -62,9 +48,6 @@ func Test_testCondition(t *testing.T) {
 		}
 
 		for i, input := range test_inputs {
-			if input == "" {
-				continue
-			}
 			test := test{fn, input, answers[i]}
 			tests = append(tests, test)
 		}
