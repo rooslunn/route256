@@ -7,31 +7,31 @@ import (
 	"testing"
 )
 
-type args struct {
+type task2_args struct {
 	rates rates
 }
 
-type test struct {
+type task2_test struct {
 	name string
-	args args
+	args task2_args
 	want float64
 }
 
-const TestDataDir = "task2-input"
+const Task2TestDataDir = "task2-input"
 
-func get_tests() ([]test, error) {
+func get_tests_task2() ([]task2_test, error) {
 
 	var err error
 
-	answer_files, err := file_list(TestDataDir, "*.a")
+	answer_files, err := file_list(Task2TestDataDir, "*.a")
 	if err != nil || len(answer_files) == 0 {
 		return nil, err
 	}
 
-	tests := make([]test, 0, len(answer_files)*3)
+	tests := make([]task2_test, 0, len(answer_files)*3)
 
 	for _, fn := range answer_files {
-		full_fn := filepath.Join(TestDataDir, fn)
+		full_fn := filepath.Join(Task2TestDataDir, fn)
 		test_inputs, err := read_file(fileNameWithoutExt(full_fn))
 		if err != nil {
 			return nil, err
@@ -65,7 +65,7 @@ func get_tests() ([]test, error) {
 			}
 			answer_float, _ = strconv.ParseFloat(answers[n], 64)
 			test_name = fmt.Sprintf("%s#%d", fn, n+1)
-			test := test{test_name, args{rates}, answer_float}
+			test := task2_test{test_name, task2_args{rates}, answer_float}
 			tests = append(tests, test)
 		}
 
@@ -74,14 +74,14 @@ func get_tests() ([]test, error) {
 }
 
 func Test_answer(t *testing.T) {
-	tests, err := get_tests();
+	tests, err := get_tests_task2()
 	if err != nil {
 		t.Fatalf("can't get test data")
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := int(answer(tt.args.rates) * 1e6)
+			got := int(task2_answer(tt.args.rates) * 1e6)
 			want := int(tt.want * 1e6)
 			if got != want {
 				t.Errorf("answer() = %v, want %v", got, want)

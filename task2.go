@@ -9,7 +9,7 @@ import (
 
 type rates [3][6][2]int
 
-func main() {
+func task2_main() {
 
 	var in *bufio.Reader
 	var out *bufio.Writer
@@ -28,11 +28,11 @@ func main() {
 				fmt.Fscan(in, &rates[i][j][0], &rates[i][j][1])
 			}
 		}
-		fmt.Fprintf(out, "%f\n", answer(rates))
+		fmt.Fprintf(out, "%f\n", task2_answer(rates))
 	}
 }
 
-func answer(rates rates) float64 {
+func task2_answer(rates rates) float64 {
 
 	maxUSD := 0.0
 
