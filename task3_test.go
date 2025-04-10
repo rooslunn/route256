@@ -20,12 +20,16 @@ type task3_test struct {
 }
 
 const Task3TestDataDir = "task3-input"
+const Task3CopilotDataDir = "task3-input/copilot"
 
 func get_tests_task3() ([]task3_test, error) {
 
 	var err error
 
-	answer_files, err := file_list(Task3TestDataDir, "*.a")
+	// testDir := Task3CopilotDataDir
+	testDir := Task3TestDataDir
+
+	answer_files, err := file_list(testDir, "*.a")
 	if err != nil || len(answer_files) == 0 {
 		return nil, err
 	}
@@ -33,7 +37,7 @@ func get_tests_task3() ([]task3_test, error) {
 	tests := make([]task3_test, 0, len(answer_files)*TaskCountMulti)
 
 	for _, fn := range answer_files {
-		full_fn := filepath.Join(Task3TestDataDir, fn)
+		full_fn := filepath.Join(testDir, fn)
 		test_inputs, err := read_file(fileNameWithoutExt(full_fn))
 		if err != nil {
 			return nil, err

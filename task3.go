@@ -30,11 +30,11 @@ func main() {
 
 func task3_answer(words []string) int {
 
-	evenHits := make(map[string]int)
-	oddHits := make(map[string]int)
+	hitsMap := make(map[string]int)
 
 	for _, word := range words {
 		var evenLeadHits, oddLeadHits int
+		var hitKey string
 		var evenLead, oddLead rune
 
 		evenLead = rune(word[0])
@@ -57,39 +57,24 @@ func task3_answer(words []string) int {
 		}
 
 		if evenLeadHits > 0 {
-			evenHitKey := fmt.Sprintf("%s_%d", string(evenLead), evenLeadHits)
-			evenHits[evenHitKey]++
+			hitKey = fmt.Sprintf("0_%d_%d", evenLead, evenLeadHits)
+			hitsMap[hitKey]++
 		}
 
 		if oddLeadHits > 0 {
-			oddHitKey := fmt.Sprintf("%s_%d", string(oddLead), oddLeadHits)
-			oddHits[oddHitKey]++
+			hitKey = fmt.Sprintf("1_%d_%d", oddLead, oddLeadHits)
+			hitsMap[hitKey]++
 		}
 	}
 
-	count_even := 0
-	count_odd := 0
+	count := 0
 
-	for k, v := range evenHits {
-		if string(k[0]) == "0" {
-			continue
-		}
+	for _, v := range hitsMap {
 		if v < 2 {
 			continue
 		}
-		count_even = max(count_even, v*(v-1)/2)
+		count = max(count, v*(v-1)/2)
 	}
-	for k, v := range oddHits {
-		if string(k[0]) == "0" {
-			continue
-		}
-		if v < 2 {
-			continue
-		}
-		count_odd = max(count_odd, v*(v-1)/2)
-	}
-
-	count := max(count_even, count_odd)
 
 	return count
 }
